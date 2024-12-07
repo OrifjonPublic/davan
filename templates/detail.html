@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>DAVAN</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+  <!-- Favicons -->
+  <!-- <link href="{% static 'assets/img/favicon.png' %}" rel="icon"> -->
+  <!-- <link href="{% static 'assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon"> -->
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/aos/aos.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="{% static 'assets/css/main.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/css/detail.css' %}" rel="stylesheet">
+  <!-- =======================================================
+  * Template Name: Restaurantly
+  * Template URL: https://bootstrapmade.com/restaurantly-restaurant-template/
+  * Updated: Aug 07 2024 with Bootstrap v5.3.3
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+  <style>
+     .product-container {
+            display: flex;
+            flex-direction: column;
+            width: 90%;
+            max-width: 1000px;
+            background: #bcb3b3;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .product-content {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            gap: 5px; /* Default gap for larger screens */
+        }
+
+        .product-thumbnails-container {
+            width: 80px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            overflow: hidden;
+        }
+
+        .product-thumbnails {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            overflow-y: auto;
+            max-height: 300px;
+            scrollbar-width: thin;
+        }
+
+        .product-thumbnails img {
+            width: 60px;
+            height: 60px;
+            border-radius: 5px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .product-thumbnails img:hover, .product-thumbnails img.active {
+            border-color: #007bff;
+            transform: scale(1.1);
+        }
+
+        .product-thumbnails::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .product-thumbnails::-webkit-scrollbar-thumb {
+            background: #007bff;
+            border-radius: 10px;
+        }
+
+        .product-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .product-image img {
+            width: 100%;
+            max-width: 90%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .product-details {
+            flex: 0 0 30%; /* Set to 30% of the container width */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .product-details h1 {
+            font-size: 24px;
+            color: #180228d4;
+            margin-bottom: 10px;
+        }
+
+        .product-details p {
+            font-size: 16px;
+            color: #19101d;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .product-content {
+                flex-direction: column;
+                gap: 3px; /* Reduced gap for mobile screens */
+                align-items: center;
+            }
+
+            .product-thumbnails-container {
+                flex-direction: row;
+                width: 100%;
+                max-height: 80px;
+                gap: 3px;
+                overflow-x: auto;
+                overflow-y: hidden;
+            }
+
+            .product-thumbnails {
+                flex-direction: row;
+                max-height: none;
+                gap: 3px;
+            }
+
+            .product-details {
+                width: 100%;
+                text-align: center;
+                gap: 3px;
+            }
+
+            .product-image img {
+                max-width: 100%;
+            }
+        }
+  </style>
+</head>
+
+<body class="index-page">
+
+  <header id="header" class="header fixed-top">
+
+    <div class="topbar d-flex align-items-center">
+      <div class="container d-flex justify-content-center justify-content-md-between">
+        <div class="contact-info d-flex align-items-center">
+          <i class="bi bi-envelope d-flex align-items-center"><a href="">
+            {% if contact %}
+            {{contact.email}}
+            {% else %}
+            info@davan.uz
+            {% endif %}
+          </a></i>
+          <i class="bi bi-phone d-flex align-items-center ms-4"><span>
+            {% if contact %}
+            {{contact.phone_number1}}
+            {% else %}
+            +998 90 900 5776
+            {% endif %}
+            
+          </span></i>
+        </div>
+        <div class="languages d-none d-md-flex align-items-center">
+          <ul>
+            <!-- <li>Uz</li>
+            <li><a href="#">Ўз</a></li>
+            <li><a href="">Рус</a></li> -->
+          </ul>
+        </div>
+      </div>
+    </div><!-- End Top Bar -->
+
+    <div class="branding d-flex align-items-cente">
+
+      <div class="container position-relative d-flex align-items-center justify-content-between">
+        <a href="{% url 'main:home' %}" class="logo d-flex align-items-center me-auto me-xl-0">
+          <!-- Uncomment the line below if you also wish to use an image logo -->
+          <!-- <img src="assets/img/logo.png" alt=""> -->
+          <h1 class="sitename">
+            {% if company %}
+            <img src="{{company.logo.url}}" alt="">
+            {% else %}
+            DAVAN
+            {% endif %}
+          </h1>
+        </a>
+
+        <nav id="navmenu" class="navmenu">
+          <ul>
+            <li><a href="{% url 'main:home' %}" class="active">Бош саҳифа</a></li>
+            <li><a href="{% url 'main:home' %}#why-us">Маҳсулотлар</a></li>
+            <li><a href="{% url 'main:home' %}#gallery">Галерея</a></li>
+            <li><a href="{% url 'main:home' %}#contact">Контакт</a></li>
+          </ul>
+          <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+        </nav>
+
+        <!-- <a class="btn-book-a-table d-none d-xl-block" href="#book-a-table">Book a Table</a> -->
+
+      </div>
+
+    </div>
+
+  </header>
+
+    <main class="main" style="margin-top: 1%;">
+      <section class="container">
+        <!-- Xabarlar -->
+     {% if messages %}
+     <div class="message-container">
+         {% for message in messages %}
+             <div class="message {{ message.tags }}">{{ message }}</div>
+         {% endfor %}
+     </div>
+ {% endif %}
+ 
+ <script>
+     // Xabarlarni ko'rsatish
+     document.addEventListener("DOMContentLoaded", () => {
+         const messages = document.querySelectorAll('.message');
+ 
+         messages.forEach((message) => {
+             // Show message
+             message.classList.add('show');
+ 
+             // Hide message after 3 seconds
+             setTimeout(() => {
+                 message.classList.remove('show');
+             }, 3000);
+         });
+     });
+ </script>
+ 
+     </section>
+
+      <section class="section">
+        <div class="container " style="margin-bottom: 30px;">
+          <p>
+              <a href="{% url 'main:home' %}" style="text-decoration: none;">
+                <h2>Бош саҳифа </h2>
+              </a>
+          </p>
+        </div>
+        <div class="container section-title" data-aos="fade-up">
+          <h2>Танланг</h2>
+          <p>Маҳсулотлар</p>
+        
+          <!--  -->
+          <div class="product-container">
+            <div class="product-content">
+                <div class="product-thumbnails-container">
+                  {% if products %}
+                  <div class="product-thumbnails" id="thumbnailContainer">
+                  {% for product in products %}
+                  
+                    <img src="{{product.image.url}}" alt="Thumbnail 1" onclick="changeImage(this)" class="active">
+                    
+               
+                  {% endfor %}
+                </div>
+                  {% else %}
+                    <div class="product-thumbnails" id="thumbnailContainer">
+                        <img src="https://picsum.photos/300/200?random=1" alt="Thumbnail 1" onclick="changeImage(this)" class="active">
+                        <img src="https://picsum.photos/300/200?random=2" alt="Thumbnail 2" onclick="changeImage(this)">
+                        <img src="https://picsum.photos/300/200?random=3" alt="Thumbnail 3" onclick="changeImage(this)">
+                        <img src="https://picsum.photos/300/200?random=4" alt="Thumbnail 4" onclick="changeImage(this)">
+                        <img src="https://picsum.photos/300/200?random=5" alt="Thumbnail 5" onclick="changeImage(this)">
+                        <img src="https://picsum.photos/300/200?random=6" alt="Thumbnail 6" onclick="changeImage(this)">
+                        <img src="https://picsum.photos/300/200?random=7" alt="Thumbnail 7" onclick="changeImage(this)">
+                        <img src="https://picsum.photos/300/200?random=8" alt="Thumbnail 8" onclick="changeImage(this)">
+                        <img src="https://picsum.photos/300/200?random=9" alt="Thumbnail 9" onclick="changeImage(this)">
+                        <img src="https://picsum.photos/300/200?random=10" alt="Thumbnail 10" onclick="changeImage(this)">
+                    </div>
+                  {% endif %}
+                </div>
+                <div class="product-image">
+                    <img id="mainImage" src="{{one.image.url}}" alt="Product Image">
+                </div>
+                <div class="product-details">
+                  {% if one %}  
+                  <h1> 
+                    <strong>{{one.name}}</strong>
+                  </h1>
+
+                <p style="font-family: 'Times New Roman', Times, serif;">{{one.batafsil|linebreaks}}</p>
+                    <p style="font-family: 'Courier New', Courier, monospace;"><strong>Нарх:</strong> {{one.narx_format}} so'm</p>
+                {% else %}
+                    <h1>Маҳсулот</h1>
+
+                <p style="font-family: 'Times New Roman', Times, serif;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga, voluptatum.</p>
+                    <p style="font-family: 'Courier New', Courier, monospace;"><strong>Нарх:</strong> 57 500 so'm</p>
+                    {% endif %}
+                    <a href="#specials">
+                      <button class="btn btn-warning" >Sotib oling</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    
+        
+        
+          <!--  -->
+        
+        
+        </div>
+      </section>
+      
+    <!-- Specials Section -->
+    <section id="specials" class="specials section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <!-- <h2>Specials</h2> -->
+        <p>Буюртма бериш</p>
+      </div><!-- End Section Title -->
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row">
+
+         
+          <div class="col-lg-12 mt-4 mt-lg-0">
+            <div class="tab-content">
+
+              <div class="tab-pane active show" id="specials-tab-1">
+                <div class="row">
+                
+                  
+                  <div class="col-lg-3"></div>
+
+                  <div class="col-lg-6 details order-2 order-lg-1">
+                    {% if one %}
+                      <form id="formam" action="{% url 'main:detail' one.tur %}" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
+                    {% else %}
+                      <form action="{% url 'main:detail' 'bel' %}" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
+                    {% endif %}
+                      {% csrf_token %}
+
+                        <div class="row gy-4">
+        
+                        <div class="col-md-6">
+                          <input type="text" name="name" class="form-control" placeholder="Исм & Фамилия " required="">
+                        </div>
+        
+                        <div class="col-md-6 ">
+                          <input type="text" class="form-control" name="telefon" placeholder="Телефон рақам" required="">
+                        </div>
+                        <!-- <div class="col-md-6 ">
+                          <input type="number" class="form-control" name="email"  placeholder="Сони" required="">
+                        </div> -->
+                        <!-- <div class="col-md-6 ">
+                          <select name="tur" id="" class="form-control select2" style="width: 100%;">
+                            <option value="salom" >Турини танланг</option>
+                            <option value="salom" >Бел учун</option>
+                            <option value="salom" >Бўйин учун</option>
+
+                          </select>
+                          <input type="email" class="form-control" name="email" placeholder="Your Email" required="">
+                        </div> -->
+                        <!-- <div class="col-md-12">
+                          <input type="text" class="form-control" name="subject" placeholder="Тўлиқ манзил" required="">
+                        </div> -->
+        
+                        <div class="col-md-12">
+                          <textarea class="form-control" name="xabar" rows="6" placeholder="Тўлиқ манзил, Буюртмангизни батафсил ёзинг" required=""></textarea>
+                        </div>
+        
+                        <div class="col-md-12 text-center">
+                          <!-- <div class="loading">Loading</div> -->
+                         
+                          <!-- <button class="btn btn-outline-warning"  type="submit">Юбориш</button> -->
+                          <input type="submit" value="Юбориш" class="btn btn-outline-warning">
+
+                        </div>
+        
+                      </div>
+                    </form>
+                  </div>
+                
+                </div>
+              </div>
+             
+            </div>
+          </div>
+        
+        </div>
+
+      </div>
+
+    </section><!-- /Specials Section -->
+
+    </main>
+
+    <footer id="footer" class="footer">
+
+      <div class="container footer-top">
+        <div class="row gy-4">
+          <div class="col-lg-4 col-md-6 footer-about">
+            <a href="" class="logo d-flex align-items-center">
+              <span class="sitename">DAVAN</span>
+            </a>
+          </div>
+          <div class="col-lg-2 col-md-3 footer-links">
+            <h4></h4>
+            <div class="footer-contact pt-3">
+              {% if contact %}
+              <p> <strong> {{contact.address_1}} </strong></p>
+              <p> <strong> {{contact.address_2}} </strong></p>
+              {% else %}
+              <p> <strong> Наманган вилояти Чортоқ тумани </strong></p>
+              <p> <strong>Оқтикан кичик саноат зонаси </strong> </p>
+              {% endif %}
+            </div>
+            
+          </div>
+          
+          <div class="col-lg-2 col-md-3 footer-links">
+            <h4></h4>
+            
+            <p class="mt-3"><strong>Телефон:</strong>
+              {% if contact %}
+              <br>
+              <span style="font-family: 'Times New Roman', Times, serif;">   {{contact.phone_number1}}</span>
+              <br>  
+              <span style="font-family: 'Times New Roman', Times, serif;">
+              {{contact.phone_number2}}</span>
+              {% else %}
+              <br>
+              <span style="font-family: 'Times New Roman', Times, serif;">   +998 90 900 57 76 </span>
+              <br>  
+              <span style="font-family: 'Times New Roman', Times, serif;">
+              +998 99 519 34 22</span>
+              {% endif %}
+            </p>
+  
+          </div>
+  
+          <div class="col-lg-4 col-md-12 footer-newsletter">
+            <!-- <h4>Our Newsletter</h4> -->
+            <div class="social-links d-flex mt-4">
+              {% if contact %}
+              <a href="{{contact.telegram_url}}"><i class="bi bi-telegram"></i></a>
+              <a href="{{contact.facebook_url}}"><i class="bi bi-facebook"></i></a>
+              <a href="{{contact.instagram_url}}"><i class="bi bi-instagram"></i></a>
+              <!-- <a href=""><i class="bi bi-twitter-x"></i></a> -->
+              {% else %}
+              <a href=""><i class="bi bi-telegram"></i></a>
+              <a href=""><i class="bi bi-facebook"></i></a>
+              <a href=""><i class="bi bi-instagram"></i></a>
+              <a href=""><i class="bi bi-twitter-x"></i></a>
+              {% endif %}
+            </div>
+  
+          </div>
+  
+        </div>
+      </div>
+  
+      <!-- <div class="container copyright text-center mt-4">
+        <p>© <span>Copyright</span> <strong class="px-1 sitename">Restaurantly</strong> <span>All Rights Reserved</span></p>
+        <div class="credits">
+         
+          Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+        </div> -->
+      </div>
+  
+    </footer>  
+      <!-- Scroll Top -->
+      <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+    
+      <!-- Preloader -->
+      <div id="preloader"></div>
+    
+      <!-- Vendor JS Files -->
+      <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+      <!-- <script src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script> -->
+      <script src="{% static 'assets/vendor/aos/aos.js' %}"></script>
+      <script src="{% static 'assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
+      <script src="{% static 'assets/vendor/imagesloaded/imagesloaded.pkgd.min.js' %}"></script>
+      <script src="{% static 'assets/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+      <script src="{% static 'assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
+    
+      <!-- Main JS File -->
+      <script src="{% static 'assets/js/main.js' %}"></script>
+      <script>
+        function changeImage(element) {
+            const mainImage = document.getElementById('mainImage');
+            const thumbnails = document.querySelectorAll('.product-thumbnails img');
+            mainImage.src = element.src;
+
+            thumbnails.forEach(thumbnail => thumbnail.classList.remove('active'));
+            element.classList.add('active');
+        }
+    </script>
+      
+    </body>
+    
+    </html>
